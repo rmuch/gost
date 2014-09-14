@@ -118,23 +118,36 @@ var testVectors = []testVector{
 
 func TestVectors(t *testing.T) {
 	for i, v := range testVectors {
+		t.Logf("testVectors[%d] with values:", i)
+		t.Logf("\t plaintext: %+v", v.plaintext)
+		t.Logf("\tciphertext: %+v", v.ciphertext)
+		t.Logf("\t       key: %+v", v.key)
+
 		cipher, err := NewBlockCipher(v.key, TestSbox)
 		if err != nil {
-			t.Fatalf("NewBlockCipher failed: %+v", err)
+			t.Errorf("testVectors[%d]: NewBlockCipher() failed: %+v", i, err)
+		} else {
+			t.Logf("testVectors[%d]: NewBlockCipher() returned successfully", i)
 		}
 
 		encryptResult := make([]uint8, BlockSize)
 		cipher.Encrypt(encryptResult, v.plaintext)
 
 		if !bytes.Equal(v.ciphertext, encryptResult) {
-			t.Fatalf("testVectors[%d]: output of Encrypt() did not match expected ciphertext", i)
+			t.Errorf("testVectors[%d]: output of Encrypt() did not match expected ciphertext", i)
+			t.Errorf("\tEncrypt() output: %+v", encryptResult)
+		} else {
+			t.Logf("testVectors[%d]: output of Encrypt() matched expected ciphertext", i)
 		}
 
 		decryptResult := make([]uint8, BlockSize)
 		cipher.Decrypt(decryptResult, encryptResult)
 
 		if !bytes.Equal(v.plaintext, decryptResult) {
-			t.Fatalf("testVectors[%d]: output of Decrypt() did not match expected plaintext", i)
+			t.Errorf("testVectors[%d]: output of Decrypt() did not match expected plaintext", i)
+			t.Errorf("\tDecrypt() output: %+v", decryptResult)
+		} else {
+			t.Logf("testVectors[%d]: output of Decrypt() matched expected plaintext", i)
 		}
 	}
 }

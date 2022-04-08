@@ -36,6 +36,7 @@ var CryptoProSbox = [][]byte{
 	{1, 3, 10, 9, 5, 11, 4, 15, 8, 6, 7, 14, 13, 0, 2, 12},
 }
 
+// S-box specified by the TC26, defined in RFC 7801
 var SboxIdtc26gost28147paramZ = [][]byte{
 	{12, 4, 6, 2, 10, 5, 11, 9, 14, 8, 13, 7, 0, 3, 15, 1},
 	{6, 8, 2, 3, 9, 10, 5, 12, 1, 14, 4, 7, 11, 13, 0, 15},
